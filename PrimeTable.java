@@ -43,5 +43,7 @@ public class PrimeTable {
         /* If neither of the above conditions were triggered, then this number is prime! */
         return true;
 
+
+        /* Test to verify git working */
     }
 }
