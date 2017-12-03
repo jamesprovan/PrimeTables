@@ -10,19 +10,20 @@ public class PrimeGenerator {
         this.maxSize = maxSize;
     }
 
+
     public List<Integer> generatePrimes(){
 
         List<Integer> primes = new ArrayList<>();
 
-        for (int i = 1; i <= maxSize; i++) {
+        int i = 2;
+        while (primes.size() < maxSize) {
             if (isPrime(i)) {
                 primes.add(i);
             }
+            i++;
         }
         return primes;
     }
-
-
 
     public boolean isPrime(int input) {
 

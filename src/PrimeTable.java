@@ -1,20 +1,18 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class PrimeTable {
 
-    public static void main(String[] args) {
 
-        int primeMaxSize = 1_000_000;
+    public static void main(String[] args) {
 
         long timeStart = System.currentTimeMillis();
 
-        PrimeGenerator primeGenerator = new PrimeGenerator(primeMaxSize);
+        PrimeGenerator primeGenerator = new PrimeGenerator(Config.maxSize + 1);
         List<Integer> primes = primeGenerator.generatePrimes();
 
         long timeEnd = System.currentTimeMillis();
 
-        System.out.println("Calculating primes from 1 " + primeMaxSize + " took " + (timeEnd - timeStart) + " milliseconds - there were " + primes.size() + " primes");
+        System.out.println("Calculating " + (Config.maxSize + 1) + " primes took " + (timeEnd - timeStart) + " milliseconds.");
         System.out.println(primes);
     }
 

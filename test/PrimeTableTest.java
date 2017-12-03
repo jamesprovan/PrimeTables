@@ -11,15 +11,12 @@ public class PrimeTableTest {
 
     @Test
     public void testPrimes() {
-
-        int primeMaxSize = 1_000_000;
-
         // Generate my primes
-        PrimeGenerator generator = new PrimeGenerator(primeMaxSize);
+        PrimeGenerator generator = new PrimeGenerator(Config.maxSize + 1);
         List<Integer> jamesPrimes = generator.generatePrimes();
 
         // Generate primes from the Apache Math library and verify against my own primes
-        Set<Integer> apachePrimes = generateApachePrimes(primeMaxSize);
+        Set<Integer> apachePrimes = generateApachePrimes(Config.maxSize + 1);
         assertTrue(apachePrimes.containsAll(jamesPrimes));
         assertTrue(jamesPrimes.containsAll(apachePrimes));
     }
@@ -28,12 +25,11 @@ public class PrimeTableTest {
     private Set<Integer> generateApachePrimes(int maxSize) {
         TreeSet<Integer> apachePrimes = new TreeSet<>();
         int i = 2;
-        while (i <= maxSize) {
+        while (apachePrimes.size() < maxSize) {
+            i = Primes.nextPrime(i);
             apachePrimes.add(i);
             i++;
-            i = Primes.nextPrime(i);
         }
         return apachePrimes;
-
     }
 }
