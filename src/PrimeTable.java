@@ -1,62 +1,60 @@
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import output.OutputDevice;
+import output.PrimeTableCSVWriter;
+import output.PrimeTableConsoleOutput;
+
 import java.util.List;
 
 public class PrimeTable {
 
-
     public static void main(String[] args) {
 
+        // Defaults
+        Integer tableSize = 20;
+        boolean outputToCSV = false;
+
+
+        // Read input parameters
+        if (args.length > 0) {
+            tableSize = Integer.parseInt(args[0]);
+        }
+        if (args.length > 1) {
+            outputToCSV = Boolean.parseBoolean(args[1]);
+        }
+
+        List<Integer> primes = calculatePrimes(tableSize);
+        createPrimesTable(primes, outputToCSV);
+    }
+
+    private static List<Integer> calculatePrimes(Integer n) {
         System.out.println("Calculating primes...");
+
         long timeStart = System.currentTimeMillis();
-        PrimeGenerator primeGenerator = new PrimeGenerator(Config.maxSize);
+        PrimeGenerator primeGenerator = new PrimeGenerator(n);
         List<Integer> primes = primeGenerator.generatePrimes();
         long timeEnd = System.currentTimeMillis();
-        System.out.println("Calculating " + (Config.maxSize) + " primes took " + (timeEnd - timeStart) + " milliseconds.");
 
+        System.out.println("Calculating " + n + " primes took " + (timeEnd - timeStart) + "ms.");
 
+        return primes;
+    }
+
+    private static void createPrimesTable(List<Integer> primes, boolean outputToCSV) {
         System.out.println("Building table... ");
+
         long tableStart = System.currentTimeMillis();
-        buildAndSavePrimeTable(primes);
-        long tableEnd = System.currentTimeMillis();
-        System.out.println("Table saved. This took " + (tableEnd - tableStart) + " milliseconds");
-    }
 
-    private static void buildAndSavePrimeTable(List<Integer> primes) {
-        Path path = Paths.get("C:\\primeOutput\\JamesPrimes.csv");
-        try {
-            BufferedWriter writer = Files.newBufferedWriter(path);
+        OutputDevice device;
 
-            for (int i = 0; i <= primes.size(); i++) {
-                writeLine(i, primes, writer);
-                writer.write("\n");
-            }
-            writer.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private static void writeLine(int lineNumber, List<Integer> primes, BufferedWriter writer) throws IOException {
-        if (lineNumber == 0) {
-            writer.write(",");
-            for (Integer prime : primes) {
-                writer.write(prime + ",");
-            }
+        if (outputToCSV) {
+            device = new PrimeTableCSVWriter(primes);
         } else {
-            int firstPrime = primes.get(lineNumber - 1);
-            writer.write(firstPrime + ",");
-            for (int count = 0; count < primes.size(); count++) {
-                long multiplication = (long) firstPrime * (long) primes.get(count);
-                writer.write(multiplication + ",");
-            }
+            device = new PrimeTableConsoleOutput(primes);
         }
-    }
 
+        device.performOutput();
+
+        long tableEnd = System.currentTimeMillis();
+        System.out.println("Table created. This took " + (tableEnd - tableStart) + "ms.");
+    }
 
 }
