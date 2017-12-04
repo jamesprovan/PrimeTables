@@ -1,4 +1,4 @@
 public class Config {
 
-    public static final int maxSize = 24;
+    public static final int maxSize = 10_000;
 }
