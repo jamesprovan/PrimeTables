@@ -12,11 +12,11 @@ public class PrimeTableTest {
     @Test
     public void testPrimes() {
         // Generate my primes
-        PrimeGenerator generator = new PrimeGenerator(Config.maxSize + 1);
+        PrimeGenerator generator = new PrimeGenerator(100_000);
         List<Integer> jamesPrimes = generator.generatePrimes();
 
         // Generate primes from the Apache Math library and verify against my own primes
-        Set<Integer> apachePrimes = generateApachePrimes(Config.maxSize + 1);
+        Set<Integer> apachePrimes = generateApachePrimes(100_000);
         assertTrue(apachePrimes.containsAll(jamesPrimes));
         assertTrue(jamesPrimes.containsAll(apachePrimes));
     }
